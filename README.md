@@ -23,6 +23,18 @@ The bookmarklet duplicates the Pivotal Tracker story that is currently selected 
 
 ![Example of Usage](https://raw.github.com/mjelks/pivotaltracker-clone-story/master/img/screen1.png "Usage Example (Screenshot 1)")
 
+## Compatibility
+
+Tested in the latest version of Chrome and Safari 6.1. You will need at least Safari 6.0+ as I believe that is that first version that supports the MutationObserver. Here is a handy chart with the latest support:
+
+http://caniuse.com/mutationobserver
+
+
+## Current Issues
+
+* Currently the bookmarklet may behave strangely due to the MutationObserver(). I am currently unable to run the .disconnect() method without it not working (?)
+* copying owner. I need to add another function to handle that. any other fields should be added as additional functions and added as part of the observer method. Make sure to add any values to the json object that gets passed to the hidden field.
+
 ## Contributing
 
 If you want to alter this code (totally fine as it's under the MIT license), please start at the source.js file. Feel free to modify that since it is nicely commented. I have created a perl script that will strip out comments and console.log statements and is used to generate the final bookmarklet.js file. To execute simply run the command:
