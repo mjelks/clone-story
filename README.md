@@ -32,6 +32,7 @@ http://caniuse.com/mutationobserver
 
 ## Current Issues
 
+* This is heavily reliant on jQuery and specific selectors. I can imagine this will break if the selector(s) change. Any better approaches would be appreciated, but this is a quick solution.
 * Currently the bookmarklet may behave strangely due to the MutationObserver(). I am currently unable to run the .disconnect() method without it not working (?)
 * copying owner. I need to add another function to handle that. any other fields should be added as additional functions and added as part of the observer method. Make sure to add any values to the json object that gets passed to the hidden field.
 
