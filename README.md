@@ -21,7 +21,7 @@ I decided to go with a bookmarklet approach because I use Safari and don't enjoy
 
 The bookmarklet duplicates the Pivotal Tracker story that is currently selected via a focus on the textarea. It will prompt you if you have not selected the text field of the ticket you wish to duplicate/clone.
 
-![Example of Usage](img/screen1.png "Usage Example (Screenshot 1)")
+![Example of Usage](https://raw.github.com/mjelks/pivotaltracker-clone-story/master/img/screen1.png "Usage Example (Screenshot 1)")
 
 ## Contributing
 
