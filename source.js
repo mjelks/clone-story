@@ -52,6 +52,8 @@ function clonePivotalTicket() {
     } 
     else {
         var selector = "*:focus";
+        // story_name_c422 => story_collapser_c422
+        var collapser_selector = $(selector).attr("id").replace(/story_.+_(.+)/,"story_collapser_$1");
         var obj = {
             storyTitle :   $(selector).text(),
             owner       :   $("a[id^=story_owned_by_id_dropdown]").text(),
@@ -68,9 +70,12 @@ function clonePivotalTicket() {
         $('<input/>').attr({ type: 'hidden', class: 'clone_element', name: 'clone_element', value: JSON.stringify(obj) }).appendTo('body');
         observer.observe(target, config);    
         $("button.add_story").click();
-       
+        
+        // collapse the original story that you are cloning:
+        $("#"+collapser_selector).click();
     }
 }
+
 
 /*
     this is the all important MutationObserver that handles the DOM change, 
@@ -90,6 +95,8 @@ var config = {
     childList: true, 
     characterData: true 
 };
+
+
 
 clonePivotalTicket();  
 

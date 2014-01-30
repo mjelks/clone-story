@@ -2,7 +2,7 @@ javascript:void(function () {
 
     if (typeof jQuery=='undefined') { 
         script = document.createElement( 'script' );  
-        script.src = '
+        script.src = '//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js';   
         document.body.appendChild(script);  
     } 
     
@@ -44,6 +44,8 @@ javascript:void(function () {
         } 
         else {
             var selector = "*:focus";
+            
+            var collapser_selector = $(selector).attr("id").replace(/story_.+_(.+)/,"story_collapser_$1");
             var obj = {
                 storyTitle :   $(selector).text(),
                 owner       :   $("a[id^=story_owned_by_id_dropdown]").text(),
@@ -60,9 +62,12 @@ javascript:void(function () {
             $('<input/>').attr({ type: 'hidden', class: 'clone_element', name: 'clone_element', value: JSON.stringify(obj) }).appendTo('body');
             observer.observe(target, config);    
             $("button.add_story").click();
-           
+            
+            
+            $("#"+collapser_selector).click();
         }
     }
+    
     
         
     var observer = new MutationObserver(function( mutations ) {
@@ -79,6 +84,8 @@ javascript:void(function () {
         childList: true, 
         characterData: true 
     };
+    
+    
     
     clonePivotalTicket();  
     
