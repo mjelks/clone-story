@@ -38,6 +38,26 @@ javascript:void(function () {
     }
     
     
+    function getter(selector, key) {
+        var returnValue;
+        switch(key) {
+            case 'storyTitle':
+                returnValue = $(selector).text();
+                break;  
+            case 'storyType':
+                returnValue = $(selector).parents("form").find("input[name='story[story_type]']").val();
+                break;
+            case 'owner':
+                returnValue = $("a[id^=story_owned_by_id_dropdown]").text();
+                break;  
+            default:
+                returnValue = [];
+        }
+        return returnValue;
+    }
+    
+    
+    
     function clonePivotalTicket() {  
         if(!$("input,textarea").is(":focus")) {
             alert("Please place focus on the input/textarea of the desired ticket before proceeding");
@@ -47,10 +67,10 @@ javascript:void(function () {
             
             var collapser_selector = $(selector).attr("id").replace(/story_.+_(.+)/,"story_collapser_$1");
             var obj = {
-                storyTitle :   $(selector).text(),
-                owner       :   $("a[id^=story_owned_by_id_dropdown]").text(),
-                storyType  :   $(selector).parents("form").find("input[name='story[story_type]']").val(),
-                labels      :   []
+                storyTitle  :   getter(selector,'storyTitle'),
+                owner       :   getter(selector,'owner'),
+                storyType   :   getter(selector, 'storyType'),
+                labels      :   getter(selector, '')
             };
     
             $(selector).parents("section.edit").find("ul.selected.labels li").each (function (i) { 
