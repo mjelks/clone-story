@@ -41,6 +41,26 @@ function storyTypeClone(selector, storyType) {
     });
 }
 
+// TODO: DI would be better instead of passing in 'selector'
+function getter(selector, key) {
+    var returnValue;
+    switch(key) {
+        case 'storyTitle':
+            returnValue = $(selector).text();
+            break;  
+        case 'storyType':
+            returnValue = $(selector).parents("form").find("input[name='story[story_type]']").val();
+            break;
+        case 'owner':
+            returnValue = $("a[id^=story_owned_by_id_dropdown]").text();
+            break;  
+        default:
+            returnValue = [];
+    }
+    return returnValue;
+}
+
+
 /* 
     this method grabs the contents of the currently selected story,
     then relies on the MutationObserver functionality that is part of the latest browsers to
@@ -55,10 +75,10 @@ function clonePivotalTicket() {
         // story_name_c422 => story_collapser_c422
         var collapser_selector = $(selector).attr("id").replace(/story_.+_(.+)/,"story_collapser_$1");
         var obj = {
-            storyTitle :   $(selector).text(),
-            owner       :   $("a[id^=story_owned_by_id_dropdown]").text(),
-            storyType  :   $(selector).parents("form").find("input[name='story[story_type]']").val(),
-            labels      :   []
+            storyTitle  :   getter(selector,'storyTitle'),
+            owner       :   getter(selector,'owner'),
+            storyType   :   getter(selector, 'storyType'),
+            labels      :   getter(selector, '')
         };
 
         $(selector).parents("section.edit").find("ul.selected.labels li").each (function (i) { 
