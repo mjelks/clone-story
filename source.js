@@ -41,6 +41,17 @@ function storyTypeClone(selector, storyType) {
     });
 }
 
+// click on the owner dropdown, then match the owner that is passed in and select it 
+function ownerNameClone(selector, ownerName) {
+    $(selector).find("a[id^='story_owned_by_id_dropdown']").first().click();
+    var storyTypes = $(".dropdown.story_owned_by_id ul").first().find("li");
+    storyTypes.each( function( index ) { 
+        if ($(this).text() == ownerName) {
+            $(this).find("a").first().mouseenter().click();
+        }
+    });
+}
+
 // TODO: DI would be better instead of passing in 'selector'
 function getter(selector, key) {
     var returnValue;
@@ -51,7 +62,7 @@ function getter(selector, key) {
         case 'storyType':
             returnValue = $(selector).parents("form").find("input[name='story[story_type]']").val();
             break;
-        case 'owner':
+        case 'ownerName':
             returnValue = $("a[id^=story_owned_by_id_dropdown]").text();
             break;  
         default:
@@ -59,7 +70,6 @@ function getter(selector, key) {
     }
     return returnValue;
 }
-
 
 /* 
     this method grabs the contents of the currently selected story,
@@ -76,7 +86,7 @@ function clonePivotalTicket() {
         var collapser_selector = $(selector).attr("id").replace(/story_.+_(.+)/,"story_collapser_$1");
         var obj = {
             storyTitle  :   getter(selector,'storyTitle'),
-            owner       :   getter(selector,'owner'),
+            ownerName   :   getter(selector,'ownerName'),
             storyType   :   getter(selector, 'storyType'),
             labels      :   getter(selector, '')
         };
@@ -87,6 +97,7 @@ function clonePivotalTicket() {
                 obj['labels'].push(label);
             }
         });
+        // create 
         $('<input/>').attr({ type: 'hidden', class: 'clone_element', name: 'clone_element', value: JSON.stringify(obj) }).appendTo('body');
         observer.observe(target, config);    
         $("button.add_story").click();
@@ -106,6 +117,7 @@ var observer = new MutationObserver(function( mutations ) {
     var obj = JSON.parse($('input[name="clone_element"]').last().val());
     titleClone(selector, obj.storyTitle);
     storyTypeClone(selector, obj.storyType);
+    ownerNameClone(selector, obj.ownerName);
     labelClone(selector, obj.labels);
 });
 

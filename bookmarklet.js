@@ -38,6 +38,17 @@ javascript:void(function () {
     }
     
     
+    function ownerNameClone(selector, ownerName) {
+        $(selector).find("a[id^='story_owned_by_id_dropdown']").first().click();
+        var storyTypes = $(".dropdown.story_owned_by_id ul").first().find("li");
+        storyTypes.each( function( index ) { 
+            if ($(this).text() == ownerName) {
+                $(this).find("a").first().mouseenter().click();
+            }
+        });
+    }
+    
+    
     function getter(selector, key) {
         var returnValue;
         switch(key) {
@@ -47,7 +58,7 @@ javascript:void(function () {
             case 'storyType':
                 returnValue = $(selector).parents("form").find("input[name='story[story_type]']").val();
                 break;
-            case 'owner':
+            case 'ownerName':
                 returnValue = $("a[id^=story_owned_by_id_dropdown]").text();
                 break;  
             default:
@@ -55,7 +66,6 @@ javascript:void(function () {
         }
         return returnValue;
     }
-    
     
     
     function clonePivotalTicket() {  
@@ -68,7 +78,7 @@ javascript:void(function () {
             var collapser_selector = $(selector).attr("id").replace(/story_.+_(.+)/,"story_collapser_$1");
             var obj = {
                 storyTitle  :   getter(selector,'storyTitle'),
-                owner       :   getter(selector,'owner'),
+                ownerName   :   getter(selector,'ownerName'),
                 storyType   :   getter(selector, 'storyType'),
                 labels      :   getter(selector, '')
             };
@@ -79,6 +89,7 @@ javascript:void(function () {
                     obj['labels'].push(label);
                 }
             });
+            
             $('<input/>').attr({ type: 'hidden', class: 'clone_element', name: 'clone_element', value: JSON.stringify(obj) }).appendTo('body');
             observer.observe(target, config);    
             $("button.add_story").click();
@@ -95,6 +106,7 @@ javascript:void(function () {
         var obj = JSON.parse($('input[name="clone_element"]').last().val());
         titleClone(selector, obj.storyTitle);
         storyTypeClone(selector, obj.storyType);
+        ownerNameClone(selector, obj.ownerName);
         labelClone(selector, obj.labels);
     });
     
